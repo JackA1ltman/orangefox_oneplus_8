@@ -4,11 +4,11 @@ export TARGET_ARCH="arm64-v8a"
 export OF_MAINTAINER=Wishmasterflo
 
 # Build environment stuffs
-export FOX_BUILD_DEVICE="OnePlus8T"
+export FOX_BUILD_DEVICE="OnePlus8"
 export ALLOW_MISSING_DEPENDENCIES=true
 export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
-export TARGET_DEVICE_ALT="kebab, Kebab, instantnoodle, instantnoodlep, lemonades, lemonkebab, OnePlus8, OnePlus 8, OnePlus8T, OnePlus 8T, OnePlus8Pro, OnePlus9R"
-export FOX_TARGET_DEVICES="kebab, Kebab, instantnoodle, instantnoodlep, lemonades, lemonkebab, OnePlus8, OnePlus 8, OnePlus8T, OnePlus 8T, OnePlus8Pro, OnePlus9R"
+export TARGET_DEVICE_ALT="instantnoodle, instantnoodlep, OnePlus8, OnePlus 8, OnePlus8Pro"
+export FOX_TARGET_DEVICES="instantnoodle, instantnoodlep, OnePlus8, OnePlus 8, OnePlus8Pro"
 export BUILD_USERNAME="nobody"
 export BUILD_HOSTNAME="android-build"
 
@@ -46,8 +46,8 @@ export OF_DISABLE_MIUI_OTA_BY_DEFAULT=1
 # Quick Backup list
 export OF_QUICK_BACKUP_LIST="/boot;/data;/super;"
 
-# Set default Keymaster Version
-export OF_DEFAULT_KEYMASTER_VERSION=4.1
+# ensure that /sdcard is bind-unmounted before f2fs data repair or format (required for FBE v1)
+export OF_UNBIND_SDCARD_F2FS=1
 
 # Magisk
 export FOX_USE_SPECIFIC_MAGISK_ZIP=~/Magisk/Magisk-v28.1.zip

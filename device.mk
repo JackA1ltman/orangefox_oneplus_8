@@ -14,10 +14,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 LOCAL_PATH := device/oneplus/opkona
 
 #SHIPPING API
-PRODUCT_SHIPPING_API_LEVEL := 30
-
-#VNDK API
-PRODUCT_TARGET_VNDK_VERSION := 32
+PRODUCT_SHIPPING_API_LEVEL := 29
 
 # define hardware platform
 PRODUCT_PLATFORM := kona

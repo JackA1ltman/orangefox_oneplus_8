@@ -15,5 +15,5 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/ofox_opkona.mk
+    $(LOCAL_DIR)/twrp_opkona.mk
 

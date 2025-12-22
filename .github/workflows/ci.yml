@@ -96,12 +96,14 @@ jobs:
         img_file=$(find "${{ env.OUTPUT_DIR }}" -name "${{ env.BUILD_TARGET }}*.img" -print -quit)
         zip_file=$(find "${{ env.OUTPUT_DIR }}" -name "OrangeFox*.zip" -print -quit)
         if [ -f "$img_file" ]; then
+            echo "FIle name: $img_file"
             echo "CHECK_IMG_IS_OK=true" >> $GITHUB_ENV
             echo "MD5_IMG=$(md5sum "$img_file" | cut -d ' ' -f 1)" >> $GITHUB_ENV
         else
             echo "Recovery out directory is empty."
         fi
         if [ -f "$zip_file" ]; then
+            echo "FIle name: $zip_file"
             echo "CHECK_ZIP_IS_OK=true" >> $GITHUB_ENV
             echo "MD5_ZIP=$(md5sum "$zip_file" | cut -d ' ' -f 1)" >> $GITHUB_ENV
         else
@@ -113,10 +115,8 @@ jobs:
       uses: softprops/action-gh-release@master
       with:
         files: |
-          ${{ env.OUTPUT_DIR }}/OrangeFox*.img
-          ${{ env.OUTPUT_DIR }}/OrangeFox*.tar
-          ${{ env.OUTPUT_DIR }}/OrangeFox*.zip
-          ${{ env.OUTPUT_DIR }}/ramdisk-recovery.*
+          ${{ env.OUTPUT_DIR }}/*.img
+          ${{ env.OUTPUT_DIR }}/*.zip
         name: Unofficial OrangeFox for ${{ env.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
         tag_name: ${{ github.run_id }}
         body: |

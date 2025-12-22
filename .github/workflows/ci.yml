@@ -14,12 +14,13 @@ on:
         default: 'system/bin/qseecomd'
 
 env:
-  MANIFEST_BRANCH: '12.1'
-  DEVICE_TREE: 'https://github.com/JackA1ltman/orangefox_oneplus_8'
-  DEVICE_TREE_BRANCH: 'android-15'
-  DEVICE_NAME: 'ofox_opkona'
-  DEVICE_PATH: 'device/oneplus/opkona'
-  BUILD_TARGET: 'recovery'
+  MANIFEST_BRANCH : "12.1"
+  DEVICE_TREE : "https://github.com/JackA1ltman/orangefox_oneplus_8"
+  DEVICE_TREE_BRANCH : "android-15"
+  DEVICE_NAME : "ofox_opkona"
+  DEVICE_PATH : "device/oneplus/opkona"
+  BUILD_TARGET : "recovery"
+
 jobs:
   build:
     name: Build Oneplus Orangefox by ${{ github.actor }}

@@ -27,8 +27,8 @@ jobs:
     if: github.event.repository.owner.id == github.event.sender.id
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      ORANGEFOX_ROOT: ${{ github.workspace }}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
-      OUTPUT_DIR: ${{ github.workspace }}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}/out/target/product/${{ inputs.DEVICE_NAME }}
+      ORANGEFOX_ROOT: ${{ github.workspace }}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}
+      OUTPUT_DIR: ${{ github.workspace }}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}/out/target/product/${{ env.DEVICE_NAME }}
 
     permissions:
       contents: write
@@ -64,13 +64,13 @@ jobs:
         git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
         git clone https://gitlab.com/OrangeFox/sync.git -b master
         cd sync
-        ./orangefox_sync.sh --branch ${{ inputs.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ inputs.MANIFEST_BRANCH }}
+        ./orangefox_sync.sh --branch ${{ env.MANIFEST_BRANCH }} --path ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}
 
     - name: Clone Device Tree
       run: |
         cd ${{ env.ORANGEFOX_ROOT }}
-        git clone ${{ inputs.DEVICE_TREE }} -b ${{ inputs.DEVICE_TREE_BRANCH }} ./${{ inputs.DEVICE_PATH }}
-        cd ${{ inputs.DEVICE_PATH }}
+        git clone ${{ env.DEVICE_TREE }} -b ${{ env.DEVICE_TREE_BRANCH }} ./${{ env.DEVICE_PATH }}
+        cd ${{ env.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
         # From ofox dependencies
@@ -92,7 +92,7 @@ jobs:
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         set -e
-        lunch ${{ inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ inputs.BUILD_TARGET }}image
+        lunch ${{ env.DEVICE_NAME }}-eng && make clean && mka adbd ${{ env.BUILD_TARGET }}image
         popd
 
     - name: Set Build Date # Build date in UTC
@@ -102,7 +102,7 @@ jobs:
     - name: Check if the recovery exists # It makes the recovery.img and renames it to Orangefox*.img but the OG should also work
       if: always()
       run: |
-        img_file=$(find "${{ env.OUTPUT_DIR }}" -name "${{ inputs.BUILD_TARGET }}*.img" -print -quit)
+        img_file=$(find "${{ env.OUTPUT_DIR }}" -name "${{ env.BUILD_TARGET }}*.img" -print -quit)
         zip_file=$(find "${{ env.OUTPUT_DIR }}" -name "OrangeFox*.zip" -print -quit)
         if [ -f "$img_file" ]; then
             echo "CHECK_IMG_IS_OK=true" >> $GITHUB_ENV
@@ -126,12 +126,12 @@ jobs:
           ${{ env.OUTPUT_DIR }}/OrangeFox*.tar
           ${{ env.OUTPUT_DIR }}/OrangeFox*.zip
           ${{ env.OUTPUT_DIR }}/ramdisk-recovery.*
-        name: Unofficial OrangeFox for ${{ inputs.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
+        name: Unofficial OrangeFox for ${{ env.DEVICE_NAME }} // ${{ env.BUILD_DATE }}
         tag_name: ${{ github.run_id }}
         body: |
-          Build: ${{ inputs.MANIFEST_BRANCH }}
-          Device: [Device Tree/Branch](${{ inputs.DEVICE_TREE }}/tree/${{ inputs.DEVICE_TREE_BRANCH }})
-          Commit: Most recent [commit](${{ inputs.DEVICE_TREE }}/commit/${{ env.COMMIT_ID }}) during building.
+          Build: ${{ env.MANIFEST_BRANCH }}
+          Device: [Device Tree/Branch](${{ env.DEVICE_TREE }}/tree/${{ env.DEVICE_TREE_BRANCH }})
+          Commit: Most recent [commit](${{ env.DEVICE_TREE }}/commit/${{ env.COMMIT_ID }}) during building.
           MD5 (img): ${{ env.MD5_IMG }}
           MD5 (zip): ${{ env.MD5_ZIP }}
         prerelease: true
@@ -140,9 +140,9 @@ jobs:
       if: inputs.LDCHECK == 'true'
       run: |
         cd tools
-        mv -n libneeds ${GITHUB_WORKSPACE}/${{ env.OUTPUT_DIR }}/${{ inputs.DEVICE_NAME }}/recovery/root/
-        mv -n ldcheck ${GITHUB_WORKSPACE}/${{ env.OUTPUT_DIR }}/${{ inputs.DEVICE_NAME }}/recovery/root/
-        cd ${GITHUB_WORKSPACE}/${{ env.OUTPUT_DIR }}/${{ inputs.DEVICE_NAME }}/recovery/root
+        mv -n libneeds ${GITHUB_WORKSPACE}/${{ env.OUTPUT_DIR }}/${{ env.DEVICE_NAME }}/recovery/root/
+        mv -n ldcheck ${GITHUB_WORKSPACE}/${{ env.OUTPUT_DIR }}/${{ env.DEVICE_NAME }}/recovery/root/
+        cd ${GITHUB_WORKSPACE}/${{ env.OUTPUT_DIR }}/${{ env.DEVICE_NAME }}/recovery/root
         python3 ldcheck -p system/lib64:vendor/lib64:system/lib:vendor/lib -d ${{ inputs.LDCHECKPATH }}
         echo "Done checking missing dependencies. Review, and reconfigure your tree."
       continue-on-error: true

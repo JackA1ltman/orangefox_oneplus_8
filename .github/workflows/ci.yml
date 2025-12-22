@@ -1,4 +1,4 @@
-name: OrangeFox [OFRP]
+name: OrangeFox build
 
 on:
   workflow_dispatch:
@@ -48,7 +48,7 @@ on:
 
 jobs:
   build:
-    name: Build OFRP by ${{ github.actor }}
+    name: Build Oneplus Orangefox by ${{ github.actor }}
     runs-on: ubuntu-22.04
     if: github.event.repository.owner.id == github.event.sender.id
     env:

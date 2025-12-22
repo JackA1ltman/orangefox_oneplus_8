@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
 
 env:
+  ORANGEFOX_ROOT: "$GITHUB_WORKSPACE/OrangeFox/fox_12.1"
+  OUTPUT_DIR: "$GITHUB_WORKSPACE/OrangeFox/fox_12.1/out/target/product/ofox_opkona"
   MANIFEST_BRANCH : "12.1"
   DEVICE_TREE : "https://github.com/JackA1ltman/orangefox_oneplus_8"
   DEVICE_TREE_BRANCH : "android-15"
@@ -18,10 +20,6 @@ jobs:
     name: Build Oneplus Orangefox by ${{ github.actor }}
     runs-on: ubuntu-22.04
     if: github.event.repository.owner.id == github.event.sender.id
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      ORANGEFOX_ROOT: ${{ github.workspace }}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}
-      OUTPUT_DIR: ${{ github.workspace }}/OrangeFox/fox_${{ env.MANIFEST_BRANCH }}/out/target/product/${{ env.DEVICE_NAME }}
 
     permissions:
       contents: write

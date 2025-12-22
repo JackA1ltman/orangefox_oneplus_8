@@ -5,7 +5,7 @@ on:
 
 env:
   ORANGEFOX_ROOT: "$GITHUB_WORKSPACE/OrangeFox/fox_12.1"
-  OUTPUT_DIR: "$GITHUB_WORKSPACE/OrangeFox/fox_12.1/out/target/product/ofox_opkona"
+  OUTPUT_DIR: "$GITHUB_WORKSPACE/OrangeFox/fox_12.1/out/target/product/opkona"
   MANIFEST_BRANCH : "12.1"
   DEVICE_TREE : "https://github.com/JackA1ltman/orangefox_oneplus_8"
   DEVICE_TREE_BRANCH : "android-15"
